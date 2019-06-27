@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="text" id="input">
+    </div>
+    <div id="parent">
+        parent
+        <div id="son">
+            son
+            <div id="grandson">
+                grason
+            </div>
+        </div>
+    </div>
+    <script>
+       let data = {};
+       data.a = 1;
+       input.addEventListener('input',function f() {
+           data.a = this.value;
+       })
+        parent.addEventListener('click',function () {
+            alert('parent')
+        },true)
+       son.onclick = function () {
+           alert('son')
+       }
+       grandson.onclick = function () {
+           alert('gradson')
+       }
+    </script>
+</body>
+</html>

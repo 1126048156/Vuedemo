@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+</head>
+<body>
+    <div id="app">
+        <table class="table table-bordered">
+            <caption class="h1 text-center text-success">京东购物车</caption>
+            <tr>
+                <td>
+                    <label for="c">全选</label>
+                    <input type="checkbox" id="c" v-model="checkAll" @change="selectAll">
+                </td>
+                <td>商品</td>
+                <td>商品描述</td>
+                <td>单价</td>
+                <td>数量</td>
+                <td>小计</td>
+                <td>操作</td>
+            </tr>
+            <tr v-for="(product,index) in products" :key="index">
+                <td>
+                    <input type="checkbox" v-model="product.isSelect" @change="selectSingle">
+                </td>
+                <td>
+                    <img :src="product.imgUrl" alt="">
+                </td>
+                <td>{{product.bookName}}</td>
+                <td>{{product.price}}</td>
+                <td>
+                    <input type="number" v-model.number="product.amount">
+                </td>
+                <td>{{product.price*product.amount | fixed(2) }}</td>
+                <td><div class="btn btn-danger" @click="remove(index)">删除</div></td>
+            </tr>
+            <tr>
+                <td>总价{{summary | fixed(2)}}</td>
+                <td>数量{{total}}</td>
+            </tr>
+        </table>
+    </div>
+    <script>
+        let vm = new Vue({
+            el:'#app',
+            filters:{
+                fixed(value,num){
+                    return '￥'+value.toFixed(num)+'元'
+                }
+            },
+            data:{
+                checkAll:false,
+                arr:[],
+                products:[
+                    {
+                        isSelect:false,
+                        imgUrl:"https://img13.360buyimg.com/n5/jfs/t6094/107/710811867/382815/4d54717/592bf165N755a88f0.jpg",
+                        bookName:'深入浅出Nodejs',
+                        price:54.50,
+                        amount:1
+                    },
+                    {
+                        isSelect:false,
+                        imgUrl:"https://img13.360buyimg.com/n5/jfs/t1/3505/40/6920/48212/5ba4655eEa31f82f5/415cf96976f0ed36.jpg",
+                        bookName:'Vue.js实战',
+                        price:62.4,
+                        amount:1
+                    }
+                ]
+            },
+            computed:{
+                summary(){
+                    this.arr = this.products.filter((product)=>{
+                            return product.isSelect
+                        })
+                    return this.arr.reduce((pre,next)=>{
+                            return pre + next.price*next.amount
+                    },0)//c从第0项开始
+                },
+                total(){
+                    return this.arr.reduce((pre,next)=>{
+                        return pre + next.amount
+                    },0)//c从第0项开始
+                }
+            },
+            methods:{
+                selectAll(){
+                    this.products.forEach((product)=>{
+                        product.isSelect = this.checkAll;
+                    })
+                },
+                selectSingle(){
+                    this.checkAll = this.products.every((product)=>{
+                        return product.isSelect;//只有全为真才返回真
+                    })
+                },
+                remove(index){
+                    this.products.splice(index,1)
+                }
+            }
+        })
+    </script>
+</body>
+</html>
