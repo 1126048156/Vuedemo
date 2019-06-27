@@ -59,7 +59,6 @@
             },
             data:{
                 checkAll:false,
-                arr:[],
                 products:[
                     {
                         isSelect:false,
@@ -72,23 +71,20 @@
                         isSelect:false,
                         imgUrl:"https://img13.360buyimg.com/n5/jfs/t1/3505/40/6920/48212/5ba4655eEa31f82f5/415cf96976f0ed36.jpg",
                         bookName:'Vue.js实战',
-                        price:62.4,
+                        price:62.40,
                         amount:1
                     }
                 ]
             },
             computed:{
                 summary(){
-                    this.arr = this.products.filter((product)=>{
-                            return product.isSelect
-                        })
-                    return this.arr.reduce((pre,next)=>{
-                            return pre + next.price*next.amount
+                    return this.products.reduce((pre,next)=>{
+                            return pre + (next.isSelect?next.price*next.amount:0);
                     },0)//c从第0项开始
                 },
                 total(){
-                    return this.arr.reduce((pre,next)=>{
-                        return pre + next.amount
+                    return this.products.reduce((pre,next)=>{
+                        return pre +  (next.isSelect?next.amount:0);
                     },0)//c从第0项开始
                 }
             },
