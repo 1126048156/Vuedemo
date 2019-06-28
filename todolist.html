@@ -62,9 +62,12 @@
               todos:[],
             },
             watch:{
-                todos(){
-                    localStorage.setItem('todos',JSON.stringify(this.todos));
-                }
+                todos:{
+                  handler(){
+                      localStorage.setItem('todos',JSON.stringify(this.todos));
+                  },
+                  deep:true
+                },//深度监视    不然只能监视到数组，不能监视到里面
             },
             methods:{
                 push(){
@@ -74,6 +77,7 @@
                         isDouble:false//记录是否双击
                     });
                     this.title = '';
+                    console.log(this.todos)
                 },
                 remove(index){
                     this.todos.splice(index,1)
@@ -84,7 +88,6 @@
                 blur(index){
                     this.todos[index].isDouble = false
                 },
-
             },
             computed: {
                 num(){
@@ -98,7 +101,6 @@
                         })
                     }
                     if(this.hash==='#finish'){
-                        console.log(this)
                         return this.todos.filter((todo)=>{
                             return todo.isSelect;
                         })
