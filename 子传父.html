@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <son :msg="msg" @xxx="change"></son>
+    </div>
+    <template id="son">
+        <div @click="fn">
+            {{msg}}
+        </div>
+    </template>
+    <script>
+        let son = {
+            props:['msg'],
+            template:'#son',
+            data(){
+                return{
+                    a:'我是小仙女'
+                }
+            },
+            methods:{
+                fn(){
+                    this.$emit('xxx',this.a);
+                }
+            }
+        }
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                msg:'我是父组件'
+            },
+            methods:{
+                change(value){
+                    console.log(value)
+                }
+            },
+            components:{
+                son
+            }
+        })
+    </script>
+</body>
+</html>

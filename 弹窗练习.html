@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .mask{
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            left:0;
+            right: 0;
+            top:0;
+            background-color: rgba(0,0,0,.35);
+        }
+        .mask .show{
+            position: absolute;
+            left: 0;
+            right: 0;
+            top:0;
+            bottom: 0;
+            width: 600px;
+            height: 350px;
+            margin: auto;
+            background-color: #fff;
+        }
+        .mask .show button{
+            position: absolute;
+            top:0;
+            right: 0;
+        }
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app" >
+        <button @click="fn">点击弹窗</button>
+        <hide v-show="isShow" @close="fn"></hide>
+    </div>
+    <template id="hide">
+        <div class="mask">
+            <div class="show">
+                <button @click="fn">关闭弹窗</button>
+                <!--子组件通知父组件关闭-->
+            </div>
+        </div>
+    </template>
+    <script>
+        let hide = {
+            template:'#hide',
+            methods: {
+                fn(){
+                    //向父组件发射关闭事件
+                    this.$emit('close')
+                }
+            }
+        }
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                isShow:false
+            },
+            methods:{
+                fn(){
+                    this.isShow = !this.isShow;
+                }
+            },
+            components:{
+                hide
+            }
+        })
+    </script>
+</body>
+</html>
