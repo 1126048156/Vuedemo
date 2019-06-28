@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <xqq></xqq>
+        <zqs></zqs>
+    </div>
+    <template id="xqq">
+        <div>{{msg}}</div>
+    </template>
+    <template id="zqs">
+        <div @click="fn">{{msg}}</div>
+    </template>
+    <script>
+        let eventBus = new Vue();
+        let xqq = {
+            template:"#xqq",
+            data(){
+                return{
+                    msg:'我是徐青青'
+                }
+            },
+            created(){
+                eventBus.$on('send',(msg)=>{
+                    console.log(msg)
+                });//订阅一个组件
+            }
+        }
+        let zqs = {
+            template: '#zqs',
+            data(){
+                return{
+                    msg:'我是赵青松'
+                }
+            },
+            methods:{
+                fn(){
+                    eventBus.$emit('send',this.msg);//向xqq发送事件
+                }
+            }
+        }
+        let vm = new Vue({
+            el:'#app',
+            components:{
+                xqq,
+                zqs
+            }
+        })
+    </script>
+</body>
+</html>
