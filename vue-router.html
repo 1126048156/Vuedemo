@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--注意顺序-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+    <div id="app">
+        <router-link to="/home">首页</router-link>
+        <router-link to="/user">用户中心</router-link>
+        <router-link to="/about">关于我们</router-link>
+        <router-link to="/login">登录</router-link>
+        <router-link to="/register">注册</router-link>
+        <router-view></router-view>
+    </div>
+    <template id="about">
+        <div class="about">
+            <router-link to="/about/concat">联系我们</router-link>
+            <router-link to="/about/partner">合作伙伴</router-link>
+            <router-link to="/about/address">公司地址</router-link>
+            <router-view></router-view>
+        </div>
+    </template>
+    <script>
+        //局部组件，必须要注册
+        let home = {
+            template:'<div>首页</div>'
+        }
+        let user = {
+            template: '<div>用户中心</div>'
+        }
+        let about = {
+            template: '#about'
+        }
+        let login = {
+            template: '<div>登录</div>'
+        }
+        let register = {
+            template: '<div>注册</div>'
+        }
+        let concat = {
+            template:'<div>电话：15927026473</div>'
+        }
+        let partner = {
+            template:'<div>武汉纺织大学</div>'
+        }
+        let address = {
+            template:'<div>湖北省武汉市</div>'
+        }
+        let routes = [
+            {path:'/home',component:home,name:'homelink'},
+            {path:'/user',component:user,name:'userlink'},
+            {
+                path:'/about',
+                component:about,
+                name:'aboutlink',
+                children:[//配置子路由
+                    {path:'concat',component:concat},
+                    {path:'partner',component:partner},
+                    {path:'address',component:address}
+                ]
+            },
+            {path:'/login',component:login,name:'loginlink'},
+            {path:'/register',component:register,name:'userregisterlink'},
+            {path:'*',redirect:'/home'}
+        ]; //1.先设置路由和组件的映射表
+        //2. 实例化路由对象
+        let router = new VueRouter({
+            routes:routes
+        })
+        //实例化实例对象
+        //3.router对象注入到实例中
+        let vm = new Vue({
+            el:'#app',
+            router:router
+        })
+    </script>
+</body>
+</html>
